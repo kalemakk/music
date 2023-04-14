@@ -17,14 +17,18 @@ spec:
     type: Git
     git:
       uri: 'https://github.com/kalemakk/music.git'
+      ref: main
   strategy:
     type: Docker
     dockerStrategy:
       dockerfilePath: dockerfiles/Dockerfile
       from:
-        kind: ImageStreamTag
+        kind: DockerImage
         name: 'openjdk:17.0.2-oraclelinux8'
-        namespace: openshift
+#      from:
+#        kind: ImageStreamTag
+#        name: 'openjdk:17.0.2-oraclelinux8'
+#        namespace: openshift
       # env:
       #   - name: EXAMPLE
       #     value: sample-app
