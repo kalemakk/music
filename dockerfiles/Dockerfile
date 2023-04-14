@@ -1,4 +1,4 @@
-FROM openjdk:17.0.2-oraclelinux8
+FROM openjdk:17-jdk-alpine3.14
 
 WORKDIR /app
 COPY ../target/music-0.0.1-SNAPSHOT.jar /app
