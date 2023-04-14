@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: music-ing
+  namespace: music-app
+spec:
+  rules:
+    - host: console-openshift-console.apps.opscluster02.lab.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: music-svc
+                port:
+                  number: 8989
