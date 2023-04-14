@@ -1,0 +1,40 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: music-app-build
+  namespace: music-app
+  labels:
+    name: music-app-build
+spec:
+  triggers:
+    - type: GitHub
+      github:
+        secret: github-credentails
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/kalemakk/music.git'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: dockerfiles/Dockerfile
+      from:
+        kind: ImageStreamTag
+        name: 'openjdk:17.0.2-oraclelinux8'
+        namespace: openshift
+      # env:
+      #   - name: EXAMPLE
+      #     value: sample-app
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'music-app:latest'
+  # postCommit:
+  #   args:
+  #     - bundle
+  #     - exec
+  #     - rake
+  #     - test

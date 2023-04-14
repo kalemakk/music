@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: music-app
+  name: music-deploy
+  annotations:
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"music-app:latest","namespace":"music-app"},"fieldPath":"spec.template.spec.containers[?(@.name==\"container\")].image","pause":"true"}]
+spec:
+  selector:
+    matchLabels:
+      app: music-deploy
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: music-deploy
+    spec:
+      containers:
+        - name: music-app
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/music-app/music-app
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env: []
+      imagePullSecrets: []
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  paused: false
